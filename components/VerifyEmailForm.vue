@@ -18,11 +18,20 @@
 </template>
 
 <script>
-import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js'
+import {
+  CognitoUserPool,
+  CognitoUser,
+  CookieStorage,
+  AuthenticationDetails
+} from 'amazon-cognito-identity-js'
 
 export default {
   props: {
     email: {
+      type: String,
+      default: ''
+    },
+    password: {
       type: String,
       default: ''
     }
@@ -52,11 +61,25 @@ export default {
 
       cognitoUser.confirmRegistration(this.code, true, (error, result) => {
         if (error) {
-          alert(JSON.stringify(error))
+          alert(JSON.stringify(error, null, 2))
           return
         }
 
-        alert(JSON.stringify(result))
+        alert(JSON.stringify(result, null, 2))
+
+        const authenticationDetails = new AuthenticationDetails({
+          Username: this.email,
+          Password: this.password
+        })
+        cognitoUser.authenticateUser(authenticationDetails, {
+          onSuccess: result => {
+            cognitoUser.cacheTokens()
+            alert(JSON.stringify(result, null, 2))
+          },
+          onFailure: error => {
+            alert(JSON.stringify(error, null, 2))
+          }
+        })
       })
     }
   }

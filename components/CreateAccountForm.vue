@@ -88,7 +88,7 @@ export default {
           }
 
           alert(JSON.stringify(result))
-          this.advanceToVerifyEmailStep(this.email)
+          this.advanceToVerifyEmailStep(this.email, this.password)
         }
       )
     }

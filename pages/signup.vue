@@ -24,7 +24,10 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <verify-email-form :email="email" />
+        <verify-email-form
+          :email="email"
+          :password="password"
+        />
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -43,13 +46,15 @@ export default {
   data() {
     return {
       currentStep: 1,
-      email: ''
+      email: '',
+      password: ''
     }
   },
 
   methods: {
-    advanceToVerifyEmailStep(email) {
+    advanceToVerifyEmailStep(email, password) {
       this.email = email
+      this.password = password
       this.currentStep = 2
     }
   }
