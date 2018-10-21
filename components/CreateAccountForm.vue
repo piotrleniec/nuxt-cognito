@@ -29,6 +29,15 @@
     >
       Submit
     </v-btn>
+
+    <v-snackbar
+      v-model="showSnackbar"
+      :top="true"
+      :timeout="3000"
+      color="error"
+    >
+      {{ snackbarMessage }}
+    </v-snackbar>
   </v-form>
 </template>
 
@@ -57,7 +66,9 @@ export default {
         v => !!v || 'is required',
         v => v.length >= 6 || 'must have at least 6 characters'
       ],
-      passwordConfirmationRules: [v => !!v || 'is required']
+      passwordConfirmationRules: [v => !!v || 'is required'],
+      showSnackbar: false,
+      snackbarMessage: ''
     }
   },
 
@@ -83,11 +94,11 @@ export default {
         null,
         (error, result) => {
           if (error) {
-            alert(JSON.stringify(error))
+            this.showSnackbar = true
+            this.snackbarMessage = error.message
             return
           }
 
-          alert(JSON.stringify(result))
           this.advanceToVerifyEmailStep(this.email, this.password)
         }
       )
