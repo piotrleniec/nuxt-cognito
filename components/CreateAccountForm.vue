@@ -1,58 +1,48 @@
 <template>
-  <v-layout
-    align-center
-    justify-center
-  >
-    <v-flex xs6>
-      <v-card>
-        <v-card-title>
-          <h1>Create Account</h1>
-        </v-card-title>
+  <v-form v-model="valid">
+    <v-text-field
+      v-model="email"
+      :rules="emailRules"
+      type="email"
+      placeholder="Email"
+    />
 
-        <v-form v-model="valid">
-          <v-card-text>
-            <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              type="email"
-              placeholder="Email"
-            />
+    <v-text-field
+      v-model="password"
+      :rules="passwordRules"
+      type="password"
+      placeholder="Password"
+    />
 
-            <v-text-field
-              v-model="password"
-              :rules="passwordRules"
-              type="password"
-              placeholder="Password"
-            />
+    <v-text-field
+      v-model="passwordConfirmation"
+      :rules="passwordConfirmationRules"
+      :error-messages="passwordMatchError"
+      type="password"
+      placeholder="Confirm Password"
+    />
 
-            <v-text-field
-              v-model="passwordConfirmation"
-              :rules="passwordConfirmationRules"
-              :error-messages="passwordMatchError"
-              type="password"
-              placeholder="Confirm Password"
-            />
-          </v-card-text>
-
-          <v-card-actions>
-            <v-btn
-              :disabled="!valid"
-              color="primary"
-              @click="signUp"
-            >
-              Submit
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-flex>
-  </v-layout>
+    <v-btn
+      :disabled="!valid"
+      color="primary"
+      @click="createAccount"
+    >
+      Submit
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
 import { CognitoUserPool } from 'amazon-cognito-identity-js'
 
 export default {
+  props: {
+    advanceToVerifyEmailStep: {
+      type: Function,
+      default: () => {}
+    }
+  },
+
   data() {
     return {
       email: '',
@@ -70,6 +60,7 @@ export default {
       passwordConfirmationRules: [v => !!v || 'is required']
     }
   },
+
   computed: {
     passwordMatchError() {
       if (this.password === this.passwordConfirmation) return ''
@@ -77,8 +68,9 @@ export default {
       return "doesn't match the password"
     }
   },
+
   methods: {
-    signUp() {
+    createAccount() {
       const cognitoUserPool = new CognitoUserPool({
         UserPoolId: process.env.NUXT_ENV_USER_POOL_ID,
         ClientId: process.env.NUXT_ENV_CLIENT_ID
@@ -96,6 +88,7 @@ export default {
           }
 
           alert(JSON.stringify(result))
+          this.advanceToVerifyEmailStep(this.email)
         }
       )
     }

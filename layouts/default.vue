@@ -57,7 +57,7 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container fill-height>
+      <v-container>
         <nuxt />
       </v-container>
     </v-content>
@@ -95,8 +95,7 @@ export default {
       items: [
         { icon: 'apps', title: 'Welcome', to: '/' },
         { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' },
-        { icon: 'account_box', title: 'Register', to: '/register' },
-        { icon: 'done', title: 'Verify', to: '/verify' }
+        { icon: 'perm_identity', title: 'Sign Up', to: '/signup' }
       ],
       miniVariant: false,
       right: true,
