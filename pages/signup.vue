@@ -39,8 +39,8 @@ import VerifyEmailForm from '~/components/VerifyEmailForm'
 
 export default {
   components: {
-    'create-account-form': CreateAccountForm,
-    'verify-email-form': VerifyEmailForm
+    CreateAccountForm,
+    VerifyEmailForm
   },
 
   data() {
