@@ -38,6 +38,7 @@
             <v-btn
               :disabled="!valid"
               color="primary"
+              @click="signUp"
             >
               Submit
             </v-btn>
@@ -49,6 +50,8 @@
 </template>
 
 <script>
+import { CognitoUserPool } from 'amazon-cognito-identity-js'
+
 export default {
   data() {
     return {
@@ -72,6 +75,29 @@ export default {
       if (this.password === this.passwordConfirmation) return ''
 
       return "doesn't match the password"
+    }
+  },
+  methods: {
+    signUp() {
+      const cognitoUserPool = new CognitoUserPool({
+        UserPoolId: process.env.NUXT_ENV_USER_POOL_ID,
+        ClientId: process.env.NUXT_ENV_CLIENT_ID
+      })
+
+      cognitoUserPool.signUp(
+        this.email,
+        this.password,
+        null,
+        null,
+        (error, result) => {
+          if (error) {
+            alert(JSON.stringify(error))
+            return
+          }
+
+          alert(JSON.stringify(result))
+        }
+      )
     }
   }
 }
