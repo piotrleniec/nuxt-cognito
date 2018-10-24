@@ -1,7 +1,9 @@
-
+require('dotenv').config()
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
+const bodyParser = require('body-parser')
+const jwtEndpoint = require('./jwtEndpoint')
 const app = express()
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
@@ -21,6 +23,9 @@ async function start() {
     const builder = new Builder(nuxt)
     await builder.build()
   }
+
+  app.use(bodyParser.json())
+  app.post('/express/jwtEndpoint', jwtEndpoint)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

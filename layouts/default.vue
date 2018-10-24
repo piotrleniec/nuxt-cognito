@@ -96,7 +96,8 @@ export default {
         { icon: 'apps', title: 'Welcome', to: '/' },
         { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' },
         { icon: 'perm_identity', title: 'Sign Up', to: '/signup' },
-        { icon: 'assessment', title: 'Session', to: '/session' }
+        { icon: 'assessment', title: 'Session', to: '/session' },
+        { icon: 'fastfood', title: 'Express Endpoint', to: '/express-endpoint' }
       ],
       miniVariant: false,
       right: true,
